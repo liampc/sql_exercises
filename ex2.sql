@@ -1,6 +1,9 @@
 CREATE DATABASE sql_exercises;
 USE sql_exercises;
 
+SET SQL_SAFE_UPDATES = 0; -- RUN to turn off safe updates to update/alter data
+SET SQL_SAFE_UPDATES = 1; -- RUN to turn on safe updates again
+
 CREATE TABLE Departments (
 	code INT NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -165,10 +168,32 @@ INSERT INTO Departments(code,name,budget) VALUES (11,'Quality Assurance',40000);
 INSERT INTO Employees(ssn, name, lastName, Department) VALUES (847219811, 'Mary', 'Moore',11);
 
 -- 2.17 Reduce the budget of all departments by 10%.
-
+UPDATE Departments
+SET budget = budget*0.9;
 
 -- 2.18 Reassign all employees from the Research department (code 77) to the IT department (code 14).
+UPDATE Employees
+SET Department = 14
+WHERE Department = 77;
+
+# To check
+SELECT * FROM Employees
+WHERE Department = 14;
+
 -- 2.19 Delete from the table all employees in the IT department (code 14).
+DELETE FROM Employees
+WHERE Department = 14;
+
 -- 2.20 Delete from the table all employees who work in departments with a budget greater than or equal to $60,000.
+DELETE FROM Employees 
+WHERE Department IN ( -- IN <- allows you to specify mulitple values in a WHERE clause
+	SELECT code FROM Departments 
+    WHERE budget >= 60000
+);
+
 -- 2.21 Delete from the table all employees.
+DELETE FROM Employees;
+
+#To check:
+SELECT * FROM Employees;
 
