@@ -119,11 +119,29 @@ WHERE Boxes.code IN (
 );
 
 
+
 -- 15. Remove all boxes with a value lower than $100.
 DELETE FROM Boxes
 WHERE Boxes.value < 100;
 
 -- 16. Remove all boxes from saturated warehouses.
 
-SELECT * FROM Boxes, Warehouses;
+  DELETE FROM Boxes 
+  WHERE Warehouse IN 
+  (SELECT * FROM 
+   (SELECT Code
+	FROM Warehouses
+	WHERE Capacity <
+       (SELECT COUNT(*)
+		FROM Boxes
+		WHERE Warehouse = Warehouses.Code)
+	) AS Bxs
+   );
+   
+   
+   
+   
+
+
+
 
